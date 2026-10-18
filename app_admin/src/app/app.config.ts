@@ -1,9 +1,18 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { HttpClientModule, provideHttpClient } from '@angular/common/http';
+
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { authInterceptProvider } from './utils/jwt';
 
 // zone.js added so the page updates after loading data (guide uses older Angular)
 export const appConfig: ApplicationConfig = {
-  providers: [provideBrowserGlobalErrorListeners(), provideZoneChangeDetection(), provideRouter(routes), provideHttpClient()],
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideZoneChangeDetection(),
+    provideRouter(routes),
+    provideHttpClient(),
+    importProvidersFrom(HttpClientModule),
+    authInterceptProvider
+  ],
 };
